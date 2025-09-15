@@ -53,4 +53,4 @@ Proyek ini dibangun sepenuhnya menggunakan **HTML, CSS (TailwindCSS), dan JavaSc
 
 ## ✨ Pembuat
 
-Dibuat dengan ❤️ oleh **Ucuk (M. Yusuf)**
+Dibuat oleh **Ucuk (M. Yusuf)**
