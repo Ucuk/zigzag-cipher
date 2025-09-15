@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zig-Zag Cipher By Ucuk</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" type="image/png" href="/Kriptografi/ico.jpg">
+  <style>
+    body {
+      background-image: url('https://4kwallpapers.com/images/walls/packs/103.jpg');
+      background-size: cover;
+      background-position: center;
+      backdrop-filter: blur(6px);
+    }
+    .dark body {
+      background-image: url('https://4kwallpapers.com/images/walls/packs/370.jpg');
+    }
+  </style>
+</head>
+<body class="bg-gray-100/70 dark:bg-gray-900/80 text-gray-900 dark:text-gray-100 transition-colors duration-500 min-h-screen">
+<!-- Audio -->
+<audio id="clickSound" src="https://uncomfortable-black-huylkamcnc.edgeone.app/computer-mouse-click-352734.mp3"></audio>
+<audio id="bgMusic" src="https://classical-yellow-yztnc25ike.edgeone.app/Free%20Background%20Music%20For%20Youtube%20Videos%20No%20Copyright%20Download%20for%20Content%20Creators%20[0BIaDVnYp2A].mp3" loop></audio>
+
+
+  <div class="container mx-auto px-4 py-10">
+    <h1 class="text-4xl font-extrabold text-center mb-8 drop-shadow-lg">⚡ Zig-Zag Cipher Ucuk ⚡</h1>
+
+
+
+    <!-- Mode Toggle & Musik -->
+    <div class="flex justify-center mb-6 gap-4">
+      <button id="toggleMode" class="px-5 py-2 rounded-full bg-gray-800 text-white dark:bg-yellow-400 dark:text-black shadow-lg transition">🌗 Toggle Mode</button>
+      <button id="toggleMusic" class="px-5 py-2 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg">🎵 Musik</button>
+    </div>
+
+    <!-- Input Section -->
+    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-2xl p-6 mb-8">
+      <textarea id="inputText" rows="4" placeholder="Masukkan teks di sini..." class="w-full p-3 rounded-lg border dark:border-gray-700 bg-gray-50/70 dark:bg-gray-700/50"></textarea>
+      <div class="flex flex-wrap gap-4 mt-4 items-center">
+        <label class="flex items-center gap-2">
+          <span>Jumlah Rail:</span>
+          <input id="rails" type="number" value="3" min="2" class="w-20 p-2 rounded-md border dark:border-gray-700 bg-gray-50/70 dark:bg-gray-700/50">
+        </label>
+        <button id="encryptBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow">Encrypt</button>
+        <button id="decryptBtn" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow">Decrypt</button>
+      </div>
+
+      <!-- Import / Export -->
+      <div class="mt-6 flex flex-wrap gap-4">
+        <input type="file" id="importFile" class="hidden">
+        <button onclick="document.getElementById('importFile').click()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg shadow">📂 Import TXT</button>
+        <button id="downloadTxt" class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg shadow">💾 Download TXT</button>
+        <button id="downloadCsv" class="px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg shadow">📑 Download CSV</button>
+      </div>
+    </div>
+
+    <!-- Result Section -->
+    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-2xl p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-2xl font-bold">📜 Hasil</h2>
+        <button id="copyResult" class="px-3 py-1 bg-teal-600 hover:bg-teal-700 text-white rounded-lg shadow">📋 Copy</button>
+      </div>
+      <textarea id="outputText" rows="4" readonly class="w-full p-3 rounded-lg border dark:border-gray-700 bg-gray-50/70 dark:bg-gray-700/50"></textarea>
+    </div>
+
+    <!-- ZigZag Block Visual -->
+    <div id="zigzagBlock" class="mt-10 relative w-full overflow-x-auto whitespace-nowrap bg-gray-200/70 dark:bg-gray-700/70 rounded-xl p-4 h-56 shadow-2xl">
+      <!-- animasi zig-zag akan muncul di sini -->
+    </div>
+  </div>
+
+  <script>
+    const inputText = document.getElementById('inputText');
+    const outputText = document.getElementById('outputText');
+    const railsInput = document.getElementById('rails');
+    const zigzagBlock = document.getElementById('zigzagBlock');
+    const clickSound = document.getElementById('clickSound');
+    const bgMusic = document.getElementById('bgMusic');
+    let musicPlaying = false;
+
+    function playClick() {
+      clickSound.currentTime = 0;
+      clickSound.play();
+    }
+
+    function toggleMusic() {
+      if (musicPlaying) {
+        bgMusic.pause();
+      } else {
+        bgMusic.play();
+      }
+      musicPlaying = !musicPlaying;
+    }
+
+    function encrypt(text, rails) {
+      const arr = Array.from({ length: rails }, () => []);
+      let row = 0, down = true;
+      for (let ch of text) {
+        arr[row].push(ch);
+        if (down) {
+          row++;
+          if (row === rails - 1) down = false;
+        } else {
+          row--;
+          if (row === 0) down = true;
+        }
+      }
+      return arr.map(r => r.join('')).join('');
+    }
+
+    function decrypt(cipher, rails) {
+      const len = cipher.length;
+      const railLen = Array(rails).fill(0);
+      let row = 0, down = true;
+      for (let i = 0; i < len; i++) {
+        railLen[row]++;
+        if (down) {
+          row++;
+          if (row === rails - 1) down = false;
+        } else {
+          row--;
+          if (row === 0) down = true;
+        }
+      }
+      const railsArr = [];
+      let idx = 0;
+      for (let r = 0; r < rails; r++) {
+        railsArr[r] = cipher.slice(idx, idx + railLen[r]).split('');
+        idx += railLen[r];
+      }
+      let result = '';
+      row = 0; down = true;
+      for (let i = 0; i < len; i++) {
+        result += railsArr[row].shift();
+        if (down) {
+          row++;
+          if (row === rails - 1) down = false;
+        } else {
+          row--;
+          if (row === 0) down = true;
+        }
+      }
+      return result;
+    }
+
+    function showZigZag(text, rails) {
+      zigzagBlock.innerHTML = '';
+      const rows = Array.from({ length: rails }, () => []);
+      let row = 0, down = true;
+      for (let i = 0; i < text.length; i++) {
+        rows[row].push({ char: text[i], index: i });
+        if (down) {
+          row++;
+          if (row === rails - 1) down = false;
+        } else {
+          row--;
+          if (row === 0) down = true;
+        }
+      }
+      rows.forEach((r, rowIndex) => {
+        r.forEach((item) => {
+          const div = document.createElement('div');
+          div.textContent = item.char;
+          div.className = `absolute flex items-center justify-center w-10 h-10 rounded-md text-white font-bold shadow-lg transition-all duration-700 ease-in-out`;
+          div.style.backgroundColor = `hsl(${(rowIndex*80+item.index*15)%360}, 70%, 50%)`;
+          div.style.top = `${rowIndex * 60}px`;
+          div.style.left = `${item.index * 50}px`;
+          div.style.opacity = '0';
+          zigzagBlock.appendChild(div);
+          setTimeout(() => {
+            div.style.opacity = '1';
+            div.style.transform = 'translateY(-10px)';
+          }, item.index * 150);
+        });
+      });
+    }
+
+    document.getElementById('encryptBtn').onclick = () => {
+      playClick();
+      const txt = inputText.value;
+      const rails = parseInt(railsInput.value);
+      const res = encrypt(txt, rails);
+      outputText.value = res;
+      showZigZag(txt, rails);
+    };
+
+    document.getElementById('decryptBtn').onclick = () => {
+      playClick();
+      const txt = inputText.value;
+      const rails = parseInt(railsInput.value);
+      const res = decrypt(txt, rails);
+      outputText.value = res;
+      showZigZag(res, rails);
+    };
+
+    document.getElementById('toggleMode').onclick = () => {
+      document.documentElement.classList.toggle('dark');
+      playClick();
+    };
+
+    document.getElementById('toggleMusic').onclick = () => {
+      toggleMusic();
+    };
+
+    document.getElementById('downloadTxt').onclick = () => {
+      const blob = new Blob([outputText.value], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'zigzag_result.txt';
+      link.click();
+    };
+
+    document.getElementById('downloadCsv').onclick = () => {
+      const csv = `"Result"\n"${outputText.value}"`;
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'zigzag_result.csv';
+      link.click();
+    };
+
+    document.getElementById('importFile').onchange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        inputText.value = reader.result;
+      };
+      reader.readAsText(file);
+    };
+
+    document.getElementById('copyResult').onclick = () => {
+      navigator.clipboard.writeText(outputText.value);
+      alert('📋 Hasil disalin ke clipboard!');
+    };
+  </script>
+</body>
+</html>
