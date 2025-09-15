@@ -28,7 +28,7 @@ Proyek ini dibangun sepenuhnya menggunakan **HTML, CSS (TailwindCSS), dan JavaSc
 
 ## 🧪 Cara Menggunakan
 
-1. Buka `index.html` di browser.
+1. Buka `https://ucuk.github.io/zigzag-cipher/` di browser.
 2. Ketik teks yang ingin dienkripsi/dekripsi.
 3. Atur jumlah rail sesuai kebutuhan.
 4. Klik **Encrypt** untuk mengenkripsi atau **Decrypt** untuk mendekripsi.
@@ -48,13 +48,6 @@ Proyek ini dibangun sepenuhnya menggunakan **HTML, CSS (TailwindCSS), dan JavaSc
 
 - Musik dan efek klik dapat diaktifkan/dimatikan menggunakan tombol 🎵.
 - Proyek ini sepenuhnya berjalan di sisi **client (browser)**, tanpa backend.
-
----
-
-## 📄 Lisensi
-
-Proyek ini bersifat open-source dan tersedia di bawah lisensi **MIT License**.  
-Silakan gunakan, ubah, dan kembangkan sesuai kebutuhan.
 
 ---
 
