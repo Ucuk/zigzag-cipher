@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Zig-Zag Cipher By Ucuk</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="icon" type="image/png" href="/ico.jpg">
+  <link rel="icon" type="image/png" href="ico.jpg">
   <style>
     body {
       background-image: url('https://4kwallpapers.com/images/walls/packs/103.jpg');
@@ -19,7 +19,6 @@
   </style>
 </head>
 <body class="bg-gray-100/70 dark:bg-gray-900/80 text-gray-900 dark:text-gray-100 transition-colors duration-500 min-h-screen">
-<!-- Audio -->
 <audio id="clickSound" src="https://uncomfortable-black-huylkamcnc.edgeone.app/computer-mouse-click-352734.mp3"></audio>
 <audio id="bgMusic" src="https://classical-yellow-yztnc25ike.edgeone.app/Free%20Background%20Music%20For%20Youtube%20Videos%20No%20Copyright%20Download%20for%20Content%20Creators%20[0BIaDVnYp2A].mp3" loop></audio>
 
@@ -29,13 +28,11 @@
 
 
 
-    <!-- Mode Toggle & Musik -->
     <div class="flex justify-center mb-6 gap-4">
       <button id="toggleMode" class="px-5 py-2 rounded-full bg-gray-800 text-white dark:bg-yellow-400 dark:text-black shadow-lg transition">🌗 Toggle Mode</button>
       <button id="toggleMusic" class="px-5 py-2 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg">🎵 Musik</button>
     </div>
 
-    <!-- Input Section -->
     <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-2xl p-6 mb-8">
       <textarea id="inputText" rows="4" placeholder="Masukkan teks di sini..." class="w-full p-3 rounded-lg border dark:border-gray-700 bg-gray-50/70 dark:bg-gray-700/50"></textarea>
       <div class="flex flex-wrap gap-4 mt-4 items-center">
@@ -47,7 +44,6 @@
         <button id="decryptBtn" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow">Decrypt</button>
       </div>
 
-      <!-- Import / Export -->
       <div class="mt-6 flex flex-wrap gap-4">
         <input type="file" id="importFile" class="hidden">
         <button onclick="document.getElementById('importFile').click()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg shadow">📂 Import TXT</button>
@@ -56,7 +52,6 @@
       </div>
     </div>
 
-    <!-- Result Section -->
     <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-2xl p-6">
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-2xl font-bold">📜 Hasil</h2>
@@ -65,10 +60,8 @@
       <textarea id="outputText" rows="4" readonly class="w-full p-3 rounded-lg border dark:border-gray-700 bg-gray-50/70 dark:bg-gray-700/50"></textarea>
     </div>
 
-    <!-- ZigZag Block Visual -->
     <div id="zigzagBlock" class="mt-10 relative w-full overflow-x-auto whitespace-nowrap bg-gray-200/70 dark:bg-gray-700/70 rounded-xl p-4 h-56 shadow-2xl">
-      <!-- animasi zig-zag akan muncul di sini -->
-    </div>
+      </div>
   </div>
 
   <script>
@@ -95,9 +88,10 @@
     }
 
     function encrypt(text, rails) {
+      const cleanedText = text.replace(/\s/g, ''); // Menghapus semua spasi
       const arr = Array.from({ length: rails }, () => []);
       let row = 0, down = true;
-      for (let ch of text) {
+      for (let ch of cleanedText) {
         arr[row].push(ch);
         if (down) {
           row++;
@@ -183,7 +177,7 @@
       const rails = parseInt(railsInput.value);
       const res = encrypt(txt, rails);
       outputText.value = res;
-      showZigZag(txt, rails);
+      showZigZag(txt.replace(/\s/g, ''), rails);
     };
 
     document.getElementById('decryptBtn').onclick = () => {
@@ -238,5 +232,3 @@
   </script>
 </body>
 </html>
-
-
